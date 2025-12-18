@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Surprise 🎄</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding-top: 20%;
+    }
+    #timer {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎁 Encore un peu de patience...</h1>
+<p>La surprise arrive dans :</p>
+<div id="timer"></div>
+
+<script>
+  const dateCible = new Date("2025-12-25T00:01:00+01:00").getTime();
+  const lienDoc = "https://docs.google.com/document/d/100PKjd2tSe_ebikX3rBZ_HXfakEvrzcHYxOTpgtfIAE/edit?usp=sharing";
+
+  setInterval(() => {
+    const maintenant = new Date().getTime();
+    const difference = dateCible - maintenant;
+
+    if (difference <= 0) {
+      window.location.href = lienDoc;
+    } else {
+      const jours = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const heures = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const secondes = Math.floor((difference / 1000) % 60);
+
+      document.getElementById("timer").innerText =
+        `${jours}j ${heures}h ${minutes}m ${secondes}s`;
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>
