@@ -7,18 +7,13 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-
-      /* Image de fond */
       background-image: url("background.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-
-      /* Assombrissement pour lisibilité */
       background-color: rgba(0, 0, 0, 0.65);
       background-blend-mode: darken;
-
       color: white;
       text-align: center;
       padding-top: 20%;
@@ -26,21 +21,59 @@
       margin: 0;
     }
 
-    h1 {
+    h1, #timer, #message, p {
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     #timer {
       font-size: 2em;
       margin-top: 20px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     #message {
       margin-top: 25px;
       font-style: italic;
       color: #ffb6c1;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Styles pour le popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #popupContent {
+      background:#222; padding:20px; border-radius:10px;
+      text-align:center; color:white; width:300px;
+    }
+
+    #popupContent input, #popupContent button {
+      padding: 8px;
+      margin-top: 10px;
+      font-size: 1em;
+      border-radius: 4px;
+      border: none;
+    }
+
+    #popupContent button {
+      cursor: pointer;
+      background-color: #278BF5;
+      color: white;
+    }
+
+    #openPopup {
+      margin-top: 40px;
+      padding: 12px 25px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background-color: #278BF5;
+      color: white;
     }
   </style>
 </head>
@@ -53,65 +86,52 @@
   <div id="timer"></div>
   <div id="message"></div>
 
+  <!-- Bouton popup -->
+  <button id="openPopup">Accéder à la surprise en avance !</button>
+
+  <!-- Popup -->
+  <div id="popup">
+    <div id="popupContent">
+      <h2>Envoie une photo intéressante pour moi😁</h2>
+      <form id="photoForm" action="https://forms.gle/McFK7dtzfKWf3LSr9" method="GET" target="_blank">
+        <button type="submit">Ouvrir le formulaire</button>
+      </form>
+      <br>
+      <button id="closePopup">Annuler</button>
+      <p id="status" style="margin-top:10px; color:#278BF5;"></p>
+    </div>
+  </div>
+
   <script>
     const dateCible = new Date("2025-12-25T00:01:00+01:00").getTime();
-    const lienDoc = "https://docs.google.com/document/d/100PKjd2tSe_ebikX3rBZ_HXfakEvrzcHYxOTpgtfIAE/edit?usp=sharing";
+    const lienDoc = "https://docs.google.com/document/d/1FrEOvzZrYs1yNwh-BRilzD12k6kJYiCgBir2fpR50sU/edit?usp=sharing";
 
-    // Heure simulée (null = heure réelle)
     let heureForcee = null;
 
     function messageSelonHeure(heure) {
-      if (heure === null) {
-        heure = new Date().getHours();
-      }
+      if (heure === null) heure = new Date().getHours();
 
       let message = "";
-
-      if (heure >= 22 || heure < 8) {
-        message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
-      } else if (heure >= 8 && heure < 10) {
-        message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
-      } else if (heure >= 10 && heure < 12) {
-        message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
-      } else if (heure >= 12 && heure < 14) {
-        message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
-      } else if (heure >= 14 && heure < 16) {
-        message = "Tu fais la sieste ou quoi la team ???";
-      } else if (heure >= 16 && heure < 17) {
-        message = "(Promis y a un vrai truc a la fin tu vas pas regretter, je t'aime❤️PC est l heure du goûter 🍪 Toujours pas la fin du timer";
-      } else if (heure >= 17 && heure < 19) {
-        message = "Bon là j'ai plus d'inspi donc envoie une photo de tes pieds";
-      } else if (heure >= 19 && heure < 20) {
-        message = "Si tu m envoie une photo de tes brins d herbe (et pas la vraie herbe hein) peut-être que tu auras accès à la surprise plus tôt 😁😁😁";
-      } else if (heure >= 20 && heure < 22) {
-        message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! (le 25 tu seras pas couchée si jamais)";
-      }
+      if (heure >= 22 || heure < 8) message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
+      else if (heure >= 8 && heure < 10) message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
+      else if (heure >= 10 && heure < 12) message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
+      else if (heure >= 12 && heure < 14) message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
+      else if (heure >= 14 && heure < 16) message = "Tu fais la sieste ou quoi la team ???";
+      else if (heure >= 16 && heure < 17) message = "(Promis y a un vrai truc a la fin tu vas pas regretter, je t'aime❤️PC est l heure du goûter 🍪 Toujours pas la fin du timer";
+      else if (heure >= 17 && heure < 19) message = "Bon là j'ai plus d'inspi donc envoie une photo de tes pieds";
+      else if (heure >= 19 && heure < 20) message = "Si tu m envoie une photo de tes brins d herbe (et pas la vraie herbe hein) peut-être que tu auras accès à la surprise plus tôt 😁😁😁";
+      else if (heure >= 20 && heure < 22) message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! (le 25 tu seras pas couchée si jamais)";
 
       document.getElementById("message").innerText = message;
     }
 
-    // Fonction console : changer l'heure
     window.setHeure = function(h) {
       heureForcee = h;
       messageSelonHeure(h);
       console.log("⏰ Heure simulée :", h + "h");
     };
 
-    /*
-    Object.defineProperty(window, "270325", {
-      get() {
-        console.log("🎁 Accès secret activé…");
-        window.location.href = lienDoc;
-        return "🎄";
-      }
-    });
-    */
-
-    // Mise à jour du message
-    function updateMessage() {
-      messageSelonHeure(heureForcee);
-    }
-
+    function updateMessage() { messageSelonHeure(heureForcee); }
     updateMessage();
     setInterval(updateMessage, 1000 * 60 * 5);
 
@@ -121,17 +141,23 @@
       const difference = dateCible - maintenant;
 
       if (difference <= 0) {
-        window.location.href = lienDoc;
+        window.location.href = lienDoc; // Redirection vers le doc
       } else {
-        const jours = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const heures = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / (1000 * 60)) % 60);
+        const jours = Math.floor(difference / (1000*60*60*24));
+        const heures = Math.floor((difference / (1000*60*60)) % 24);
+        const minutes = Math.floor((difference / (1000*60)) % 60);
         const secondes = Math.floor((difference / 1000) % 60);
-
-        document.getElementById("timer").innerText =
-          `${jours}j ${heures}h ${minutes}m ${secondes}s`;
+        document.getElementById("timer").innerText = `${jours}j ${heures}h ${minutes}m ${secondes}s`;
       }
     }, 1000);
+
+    // Popup gestion
+    const openBtn = document.getElementById("openPopup");
+    const popup = document.getElementById("popup");
+    const closeBtn = document.getElementById("closePopup");
+
+    openBtn.addEventListener("click", () => { popup.style.display = "flex"; });
+    closeBtn.addEventListener("click", () => { popup.style.display = "none"; });
   </script>
 
 </body>
