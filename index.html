@@ -15,18 +15,83 @@
       font-size: 2em;
       margin-top: 20px;
     }
+    #message {
+      margin-top: 25px;
+      font-style: italic;
+      color: #ffb6c1;
+    }
   </style>
 </head>
 <body>
 
-<h1>P'tit prank, la surprise sera dispo le jour de Nöel😁 (je t'aiiiime❤️)</h1>
-<p>La surprise arrive dans (pas si longtemps):</p>
+<h1>P'tit prank, la surprise sera dispo le jour de Noël 😁 (je t'aiiiime❤️)</h1>
+<p>La surprise arrive dans (pas si longtemps) :</p>
 <div id="timer"></div>
+<div id="message"></div>
 
 <script>
   const dateCible = new Date("2025-12-25T00:01:00+01:00").getTime();
   const lienDoc = "https://docs.google.com/document/d/100PKjd2tSe_ebikX3rBZ_HXfakEvrzcHYxOTpgtfIAE/edit?usp=sharing";
 
+  // Heure simulée (null = heure réelle)
+  let heureForcee = null;
+
+  function messageSelonHeure(heure) {
+    if (heure === null) {
+      heure = new Date().getHours();
+    }
+
+    let message = "";
+
+    if (heure >= 22 || heure < 8) {
+      message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
+    } else if (heure >= 8 && heure < 10) {
+      message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
+    } else if (heure >= 10 && heure < 12) {
+      message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
+    } else if (heure >= 12 && heure < 14) {
+      message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
+    } else if (heure >= 14 && heure < 16) {
+      message = "Tu fais la sieste ou quoi la team ???";
+    } else if (heure >= 16 && heure < 17) {
+      message = "C est l heure du goûter 🍪 Toujours pas la fin du timer";
+    } else if (heure >= 17 && heure < 19) {
+      message = "Fin de journée 😌 toujours pas Noël.";
+    } else if (heure >= 19 && heure < 20) {
+      message = "Si tu m envoie une photo de tes brins d herbe (et pas les vrais brins d herbe hein) peut-être que tu auras accès à la surprise plus tôt";
+    } else if (heure >= 20 && heure < 22) {
+      message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! ";
+    }
+
+    document.getElementById("message").innerText = message;
+  }
+
+  // Fonction console : changer l'heure
+  window.setHeure = function(h) {
+    heureForcee = h;
+    messageSelonHeure(h);
+    console.log("⏰ Heure simulée :", h + "h");
+  };
+
+  /*
+Object.defineProperty(window, "270325", {
+  get() {
+    console.log("🎁 Accès secret activé…");
+    window.location.href = lienDoc;
+    return "🎄";
+  }
+});
+*/
+
+  // Mise à jour message
+  function updateMessage() {
+    messageSelonHeure(heureForcee);
+  }
+
+  updateMessage();
+  setInterval(updateMessage, 1000 * 60 * 5);
+
+  // Timer principal
   setInterval(() => {
     const maintenant = new Date().getTime();
     const difference = dateCible - maintenant;
