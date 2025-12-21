@@ -3,112 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <title>Surprise 🎄</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #111;
+
+      /* Image de fond */
+      background-image: url("background.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      /* Assombrissement pour lisibilité */
+      background-color: rgba(0, 0, 0, 0.65);
+      background-blend-mode: darken;
+
       color: white;
       text-align: center;
       padding-top: 20%;
+      min-height: 100vh;
+      margin: 0;
     }
+
+    h1 {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
     #timer {
       font-size: 2em;
       margin-top: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
+
     #message {
       margin-top: 25px;
       font-style: italic;
       color: #ffb6c1;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
+
 <body>
 
-<h1>P'tit prank, la surprise sera dispo le jour de Noël 😁 (je t'aiiiime❤️)</h1>
-<p>La surprise arrive dans (pas si longtemps) :</p>
-<div id="timer"></div>
-<div id="message"></div>
+  <h1>P'tit prank, la surprise sera dispo le jour de Noël 😁 (je t'aiiiime ❤️)</h1>
+  <p>La surprise arrive dans (pas si longtemps) :</p>
 
-<script>
-  const dateCible = new Date("2025-12-25T00:01:00+01:00").getTime();
-  const lienDoc = "https://docs.google.com/document/d/100PKjd2tSe_ebikX3rBZ_HXfakEvrzcHYxOTpgtfIAE/edit?usp=sharing";
+  <div id="timer"></div>
+  <div id="message"></div>
 
-  // Heure simulée (null = heure réelle)
-  let heureForcee = null;
+  <script>
+    const dateCible = new Date("2025-12-25T00:01:00+01:00").getTime();
+    const lienDoc = "https://docs.google.com/document/d/100PKjd2tSe_ebikX3rBZ_HXfakEvrzcHYxOTpgtfIAE/edit?usp=sharing";
 
-  function messageSelonHeure(heure) {
-    if (heure === null) {
-      heure = new Date().getHours();
+    // Heure simulée (null = heure réelle)
+    let heureForcee = null;
+
+    function messageSelonHeure(heure) {
+      if (heure === null) {
+        heure = new Date().getHours();
+      }
+
+      let message = "";
+
+      if (heure >= 22 || heure < 8) {
+        message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
+      } else if (heure >= 8 && heure < 10) {
+        message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
+      } else if (heure >= 10 && heure < 12) {
+        message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
+      } else if (heure >= 12 && heure < 14) {
+        message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
+      } else if (heure >= 14 && heure < 16) {
+        message = "Tu fais la sieste ou quoi la team ???";
+      } else if (heure >= 16 && heure < 17) {
+        message = "C est l heure du goûter 🍪 Toujours pas la fin du timer";
+      } else if (heure >= 17 && heure < 19) {
+        message = "Bon là j'ai plus d'inspi donc envoie une photo de tes pieds";
+      } else if (heure >= 19 && heure < 20) {
+        message = "Si tu m envoie une photo de tes brins d herbe (et pas la vraie herbe hein) peut-être que tu auras accès à la surprise plus tôt 😁😁😁";
+      } else if (heure >= 20 && heure < 22) {
+        message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! (le 25 tu seras pas couchée si jamais)";
+      }
+
+      document.getElementById("message").innerText = message;
     }
 
-    let message = "";
+    // Fonction console : changer l'heure
+    window.setHeure = function(h) {
+      heureForcee = h;
+      messageSelonHeure(h);
+      console.log("⏰ Heure simulée :", h + "h");
+    };
 
-    if (heure >= 22 || heure < 8) {
-      message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
-    } else if (heure >= 8 && heure < 10) {
-      message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
-    } else if (heure >= 10 && heure < 12) {
-      message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
-    } else if (heure >= 12 && heure < 14) {
-      message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
-    } else if (heure >= 14 && heure < 16) {
-      message = "Tu fais la sieste ou quoi la team ???";
-    } else if (heure >= 16 && heure < 17) {
-      message = "C est l heure du goûter 🍪 Toujours pas la fin du timer";
-    } else if (heure >= 17 && heure < 19) {
-      message = "Bon là j'ai plus d'inspi donc envoie une photo de tes pieds";
-    } else if (heure >= 19 && heure < 20) {
-      message = "Si tu m envoie une photo de tes brins d herbe (et pas la vraie herbe hein) peut-être que tu auras accès à la surprise plus tôt😁😁😁";
-    } else if (heure >= 20 && heure < 22) {
-      message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! (le 25 tu seras pas couchée si jamais)";
+    /*
+    Object.defineProperty(window, "270325", {
+      get() {
+        console.log("🎁 Accès secret activé…");
+        window.location.href = lienDoc;
+        return "🎄";
+      }
+    });
+    */
+
+    // Mise à jour du message
+    function updateMessage() {
+      messageSelonHeure(heureForcee);
     }
 
-    document.getElementById("message").innerText = message;
-  }
+    updateMessage();
+    setInterval(updateMessage, 1000 * 60 * 5);
 
-  // Fonction console : changer l'heure
-  window.setHeure = function(h) {
-    heureForcee = h;
-    messageSelonHeure(h);
-    console.log("⏰ Heure simulée :", h + "h");
-  };
+    // Timer principal
+    setInterval(() => {
+      const maintenant = new Date().getTime();
+      const difference = dateCible - maintenant;
 
-  /*
-Object.defineProperty(window, "270325", {
-  get() {
-    console.log("🎁 Accès secret activé…");
-    window.location.href = lienDoc;
-    return "🎄";
-  }
-});
-*/
+      if (difference <= 0) {
+        window.location.href = lienDoc;
+      } else {
+        const jours = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const heures = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / (1000 * 60)) % 60);
+        const secondes = Math.floor((difference / 1000) % 60);
 
-  // Mise à jour message
-  function updateMessage() {
-    messageSelonHeure(heureForcee);
-  }
-
-  updateMessage();
-  setInterval(updateMessage, 1000 * 60 * 5);
-
-  // Timer principal
-  setInterval(() => {
-    const maintenant = new Date().getTime();
-    const difference = dateCible - maintenant;
-
-    if (difference <= 0) {
-      window.location.href = lienDoc;
-    } else {
-      const jours = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const heures = Math.floor((difference / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((difference / (1000 * 60)) % 60);
-      const secondes = Math.floor((difference / 1000) % 60);
-
-      document.getElementById("timer").innerText =
-        `${jours}j ${heures}h ${minutes}m ${secondes}s`;
-    }
-  }, 1000);
-</script>
+        document.getElementById("timer").innerText =
+          `${jours}j ${heures}h ${minutes}m ${secondes}s`;
+      }
+    }, 1000);
+  </script>
 
 </body>
 </html>
