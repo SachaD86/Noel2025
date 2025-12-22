@@ -155,7 +155,7 @@
       if (heure === null) heure = new Date().getHours();
 
       let message = "";
-      if (heure >= 1 || heure < 8) message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
+      if (heure >= 1 && heure < 8) message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
       else if (heure >= 8 && heure < 10) message = "Coucouuu, tu as bien dormi ? Tu as rêvé de moi ?";
       else if (heure >= 10 && heure < 12) message = "Normalement je fais encore dodo, donc va te faire voir y aura pas de surprise tout de suite";
       else if (heure >= 12 && heure < 14) message = "Bon appétiiiit et oui les messages changent en fait";
