@@ -155,15 +155,18 @@
       if (heure === null) heure = new Date().getHours();
 
       let message = "";
-      if (heure >= 22 || heure < 8) message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
-      else if (heure >= 8 && heure < 10) message = "Coucouuu, tu as bien dormi ? Et bah j espère que oui mais c est toujours pas pour maintenant 😁";
-      else if (heure >= 10 && heure < 12) message = "C est quoi ton oUtFiT oF tOdAy ?? Envoie une photo en fait";
-      else if (heure >= 12 && heure < 14) message = "Bon appétiiiit, mais euh c est toujours pas l heure de la surprise";
-      else if (heure >= 14 && heure < 16) message = "Tu fais la sieste ou quoi la team ???";
-      else if (heure >= 16 && heure < 17) message = "(Promis y a un vrai truc a la fin tu vas pas regretter, je t'aime❤️PC est l heure du goûter 🍪 Toujours pas la fin du timer";
-      else if (heure >= 17 && heure < 19) message = "Bon là j'ai plus d'inspi donc envoie une photo de tes pieds";
-      else if (heure >= 19 && heure < 20) message = "Si tu m envoie une photo de tes brins d herbe (et pas la vraie herbe hein) peut-être que tu auras accès à la surprise plus tôt 😁😁😁";
-      else if (heure >= 20 && heure < 22) message = "Bon appétiiit ! Et merci d avoir fait ce que demandait l heure d avant ! (le 25 tu seras pas couchée si jamais)";
+      if (heure >= 1 || heure < 8) message = "Va faire dodo, tu fous quoi là en fait??? C est pas pour tout de suite hein";
+      else if (heure >= 8 && heure < 10) message = "Coucouuu, tu as bien dormi ? Tu as rêvé de moi ?";
+      else if (heure >= 10 && heure < 12) message = "Normalement je fais encore dodo, donc va te faire voir y aura pas de surprise tout de suite";
+      else if (heure >= 12 && heure < 14) message = "Bon appétiiiit et oui les messages changent en fait";
+      else if (heure >= 14 && heure < 15) message = "zbvuyaJerbvuEyerbvqosidvnTaieurvAbsdjnvIskjbvuaMrbvuyeErv";
+      else if (heure >= 15 && heure < 16) message = "Euuuh même ChatGPT il veut pas me donner d'inspi ça fait chier";
+      else if (heure >= 16 && heure < 17) message = "Ptit gouter la team !! Et alors ça mange quoi ? (je rigole je m en fiche";
+      else if (heure >= 17 && heure < 19) message = "Toujours la photo de tes pieds donc voila envoie";
+      else if (heure >= 19 && heure < 20) message = "Je sais plus quoi dire, fais ce que tu veux..............";
+      else if (heure >= 20 && heure < 22) message = "Bon appétiiit ! Mange plus vite par pitié";
+      else if (heure >= 22 && heure < 23) message = "Faut aller faire dodo ma petite ! Les enfants ça se couche tot voyons";
+      else if (heure >= 23 && heure < 1) message = "Et bah, elle se couche tard la mistinguette dis donc";
 
       document.getElementById("message").innerText = message;
     }
