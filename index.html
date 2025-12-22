@@ -36,7 +36,41 @@
       color: #ffb6c1;
     }
 
-    /* Styles pour le popup */
+    /* ===== BARRE DE CHARGEMENT ===== */
+    #loaderContainer {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    #loaderText {
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    #loaderBar {
+      width: 60%;
+      max-width: 400px;
+      height: 18px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #loaderProgress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #278BF5, #ffb6c1);
+      transition: width 0.3s ease;
+    }
+
+    #loaderPercent {
+      margin-top: 8px;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    /* ===== POPUP ===== */
     #popup {
       display: none;
       position: fixed;
@@ -47,19 +81,20 @@
     }
 
     #popupContent {
-      background:#222; padding:20px; border-radius:10px;
-      text-align:center; color:white; width:300px;
+      background:#222;
+      padding:20px;
+      border-radius:10px;
+      text-align:center;
+      color:white;
+      width:300px;
     }
 
-    #popupContent input, #popupContent button {
+    #popupContent button {
       padding: 8px;
       margin-top: 10px;
       font-size: 1em;
       border-radius: 4px;
       border: none;
-    }
-
-    #popupContent button {
       cursor: pointer;
       background-color: #278BF5;
       color: white;
@@ -86,19 +121,27 @@
   <div id="timer"></div>
   <div id="message"></div>
 
+  <!-- BARRE DE CHARGEMENT -->
+  <div id="loaderContainer">
+    <p id="loaderText">Chargement de la surprise…</p>
+    <div id="loaderBar">
+      <div id="loaderProgress"></div>
+    </div>
+    <p id="loaderPercent">0%</p>
+  </div>
+
   <!-- Bouton popup -->
   <button id="openPopup">Accéder à la surprise en avance !</button>
 
   <!-- Popup -->
   <div id="popup">
     <div id="popupContent">
-      <h2>Envoie une photo intéressante pour moi😁</h2>
-      <form id="photoForm" action="https://forms.gle/McFK7dtzfKWf3LSr9" method="GET" target="_blank">
+      <h2>Presque… 😁</h2>
+      <form action="https://forms.gle/McFK7dtzfKWf3LSr9" method="GET" target="_blank">
         <button type="submit">Ouvrir le formulaire</button>
       </form>
       <br>
       <button id="closePopup">Annuler</button>
-      <p id="status" style="margin-top:10px; color:#278BF5;"></p>
     </div>
   </div>
 
@@ -125,39 +168,63 @@
       document.getElementById("message").innerText = message;
     }
 
-    window.setHeure = function(h) {
-      heureForcee = h;
-      messageSelonHeure(h);
-      console.log("⏰ Heure simulée :", h + "h");
-    };
-
-    function updateMessage() { messageSelonHeure(heureForcee); }
+    function updateMessage() {
+      messageSelonHeure(heureForcee);
+    }
     updateMessage();
     setInterval(updateMessage, 1000 * 60 * 5);
 
-    // Timer principal
+    // TIMER
     setInterval(() => {
       const maintenant = new Date().getTime();
-      const difference = dateCible - maintenant;
+      const diff = dateCible - maintenant;
 
-      if (difference <= 0) {
-        window.location.href = lienDoc; // Redirection vers le doc
-      } else {
-        const jours = Math.floor(difference / (1000*60*60*24));
-        const heures = Math.floor((difference / (1000*60*60)) % 24);
-        const minutes = Math.floor((difference / (1000*60)) % 60);
-        const secondes = Math.floor((difference / 1000) % 60);
-        document.getElementById("timer").innerText = `${jours}j ${heures}h ${minutes}m ${secondes}s`;
+      if (diff <= 0) window.location.href = lienDoc;
+      else {
+        const j = Math.floor(diff / (1000*60*60*24));
+        const h = Math.floor((diff / (1000*60*60)) % 24);
+        const m = Math.floor((diff / (1000*60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        document.getElementById("timer").innerText = `${j}j ${h}h ${m}m ${s}s`;
       }
     }, 1000);
 
-    // Popup gestion
+    // POPUP
     const openBtn = document.getElementById("openPopup");
     const popup = document.getElementById("popup");
     const closeBtn = document.getElementById("closePopup");
 
-    openBtn.addEventListener("click", () => { popup.style.display = "flex"; });
-    closeBtn.addEventListener("click", () => { popup.style.display = "none"; });
+    openBtn.onclick = () => popup.style.display = "flex";
+    closeBtn.onclick = () => popup.style.display = "none";
+
+    // BARRE DE CHARGEMENT
+    let progress = 0;
+
+    function avancerChargement() {
+      if (progress >= 96) {
+        progress = 96;
+        document.getElementById("loaderText").innerText =
+          "Finalisation… veuillez patienter";
+        return;
+      }
+
+      let inc;
+      if (progress < 40) inc = Math.random() * 4 + 2;
+      else if (progress < 70) inc = Math.random() * 2 + 1;
+      else if (progress < 90) inc = Math.random() * 0.8 + 0.3;
+      else inc = Math.random() * 0.1 + 0.05;
+
+      progress += inc;
+      if (progress > 96) progress = 96;
+
+      document.getElementById("loaderProgress").style.width = progress + "%";
+      document.getElementById("loaderPercent").innerText =
+        Math.floor(progress) + "%";
+
+      setTimeout(avancerChargement, 200 + progress * 15);
+    }
+
+    avancerChargement();
   </script>
 
 </body>
